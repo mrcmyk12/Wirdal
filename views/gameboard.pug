@@ -14,5 +14,8 @@ html(lang="en")
             label(for="title") Guess 
             input(type="text", name="guess")#guess
             button(type="submit") Guess 
-
-//add code to render keys and then render their color based on key value pair
+         each letter in alphabet 
+            if letter[1] === "red" && letter[2] === "green"
+               h3(color="green") chosen #{letter[0]}
+            else 
+               h3(color="grey") #{letter[0]}
