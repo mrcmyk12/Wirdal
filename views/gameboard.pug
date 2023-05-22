@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+html(lang="en")
+   head
+      meta(charset="UTF-8")
+      meta(http-equiv="X-UA-Compatible", content="IE=edge")
+      meta(name="viewport", content="width=device-width, initial-scale=1.0")
+      title Wirdal 
+   body 
+      main 
+         h1 #{randomWord.word}
+         each g in guesses 
+            h1 #{g.guess}
+         form(action="/", method="POST") 
+            label(for="title") Guess 
+            input(type="text", name="guess")#guess
+            button(type="submit") Guess 
+
+//add code to render keys and then render their color based on key value pair
