@@ -118,12 +118,16 @@ router.get("/", (req, res, next) => {
 	for (let i = 0; i < randomWordArray.length; i++) {
 		alphabet[randomWordArray[i]][2] = "green";
 	}
+   
+   console.log(randomWordArray[0]);
 
+   //this all the data that is being shared with gameboard as it is rendered
 	res.render("gameboard", {
 		availWords: availWords,
 		randomWord: randomWord,
 		guesses: guesses,
-		alphabet: alphabet
+		alphabet: alphabet,
+      randomWordArray:randomWordArray
 	});
 });
 

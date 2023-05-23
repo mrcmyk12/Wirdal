@@ -5,17 +5,90 @@ html(lang="en")
       meta(http-equiv="X-UA-Compatible", content="IE=edge")
       meta(name="viewport", content="width=device-width, initial-scale=1.0")
       title Wirdal 
-   body 
-      main 
-         h1 #{randomWord.word}
-         each g in guesses 
-            h1 #{g.guess}
-         form(action="/", method="POST") 
-            label(for="title") Guess 
-            input(type="text", name="guess")#guess
-            button(type="submit") Guess 
-         each letter in alphabet 
-            if letter[1] === "red" && letter[2] === "green"
-               h3(color="green") chosen #{letter[0]}
-            else 
-               h3(color="grey") #{letter[0]}
+      link(rel="stylesheet", href="main.css")
+   body(bgcolor = "E1E1E1") 
+      main
+         div.grid_box
+            //h1 #{randomWord.word}
+            h1 Wirdal
+            each g in guesses
+               div.guess_box_group
+                  //first letter of guess logic
+                  //this if statement has to fulfill 3 things.  in the alphabet object for the corresponding letter, the 2 space in the array has to be color red which means
+                  //that its a letter that is in the randomWord selected and has been apart of a word guessed.  the 3 space in the array object for the corresponding letter must 
+                  //green which means that the letter is a part of the randomword selected.  and the last condition is that it is in the correct space in correspondence with the 
+                  //randomWord.  if all these conditions are met the word will show up as green
+                  if (alphabet[g.guess[0]][1] === "red" && alphabet[g.guess[0]][2] === "green" && g.guess[0] == randomWordArray[0])
+                     .right_space_letter 
+                        .right_space_letter_text #{g.guess[0]}
+                  //this else if statement checks to see if the corresponding letter in the object array meets 2 conditions.  the 2 space on the array is red which means that letter
+                  //is a part of the randomWord and is apart of the word guessed.  also checking the 3 space to see if that letter is actually a part of the randomword.  if so the 
+                  //letter shows up as yellow
+                  else if (alphabet[g.guess[0]][1] === "red" && alphabet[g.guess[0]][2] === "green")
+                     .right_letter_wrong_space
+                        .right_letter_wrong_space_text #{g.guess[0]}
+                  //else statement for if the two if statements above havent been met, then this letter is not apart of the randomWord and becomes dark grey
+                  else 
+                     .wrong_space_letter 
+                           .wrong_space_letter_text #{g.guess[0]}  
+                  //second letter of guess logic 
+                  if (alphabet[g.guess[1]][1] === "red" && alphabet[g.guess[1]][2] === "green" && g.guess[1] == randomWordArray[1])
+                     .right_space_letter 
+                        .right_space_letter_text #{g.guess[1]}           
+                  else if (alphabet[g.guess[1]][1] === "red" && alphabet[g.guess[1]][2] === "green")
+                      .right_letter_wrong_space
+                        .right_letter_wrong_space_text #{g.guess[1]}
+                  else 
+                     .wrong_space_letter 
+                           .wrong_space_letter_text #{g.guess[1]}     
+                  //third letter of guess logic   
+                  if (alphabet[g.guess[2]][1] === "red" && alphabet[g.guess[2]][2] === "green" && g.guess[2] == randomWordArray[2])
+                     .right_space_letter 
+                        .right_space_letter_text #{g.guess[2]}       
+                  else if (alphabet[g.guess[2]][1] === "red" && alphabet[g.guess[2]][2] === "green")
+                     .right_letter_wrong_space
+                        .right_letter_wrong_space_text #{g.guess[2]}
+                  else 
+                     .wrong_space_letter 
+                           .wrong_space_letter_text #{g.guess[2]}  
+                  //fourth letter of guess logic
+                  if (alphabet[g.guess[3]][1] === "red" && alphabet[g.guess[3]][2] === "green" && g.guess[3] == randomWordArray[3])
+                     .right_space_letter 
+                        .right_space_letter_text #{g.guess[3]}              
+                  else if (alphabet[g.guess[3]][1] === "red" && alphabet[g.guess[3]][2] === "green")
+                     .right_letter_wrong_space
+                        .right_letter_wrong_space_text #{g.guess[3]}
+                  else 
+                     .wrong_space_letter 
+                           .wrong_space_letter_text #{g.guess[3]}  
+                  //fifth letter of guess logic   
+                  if (alphabet[g.guess[4]][1] === "red" && alphabet[g.guess[4]][2] === "green" && g.guess[4] == randomWordArray[4])
+                     .right_space_letter 
+                        .right_space_letter_text #{g.guess[4]}         
+                  else if (alphabet[g.guess[4]][1] === "red" && alphabet[g.guess[4]][2] === "green")
+                     .right_letter_wrong_space
+                        .right_letter_wrong_space_text #{g.guess[4]}
+                  else 
+                     .wrong_space_letter 
+                           .wrong_space_letter_text #{g.guess[4]}       
+               
+         div.grid_box
+            form(action="/", method="POST") 
+               input.guess_input(type="text", name="guess")#guess
+               button.button_active(type="submit") 
+                  .button_active_text Submit
+               div.keyboard_layout
+                  div.keyboard_frame  
+                     each letter in alphabet
+                        if (letter[1] === "red" && letter[2] === "green")
+                           div.small_text_box_correct
+                              .inside_small_text_box 
+                                 .small_text_letter #{letter[0]} 
+                        else if (letter[1] === "red" && letter[2] === "")
+                           div.small_text_box_incorrect
+                              .inside_small_text_box 
+                                 .small_text_letter #{letter[0]} 
+                        else 
+                           div.small_text_box
+                              .inside_small_text_box 
+                                 .small_text_letter #{letter[0]} 
