@@ -224,6 +224,7 @@ body{
    font-weight: 500;
    font-size: 35px;
    line-height: 65px;
+   text-transform: capitalize;
 
    align-items: center;
    text-align: center;
@@ -251,6 +252,7 @@ body{
    font-weight: 500;
    font-size: 35px;
    line-height: 65px;
+   text-transform: capitalize;
 
    align-items: center;
    text-align: center;
@@ -278,6 +280,7 @@ body{
    font-weight: 500;
    font-size: 35px;
    line-height: 65px;
+   text-transform: capitalize;
 
    align-items: center;
    text-align: center;
