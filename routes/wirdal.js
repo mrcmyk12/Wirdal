@@ -71,6 +71,9 @@ let guesses = [];
 //letters used array
 let usedLettersArray = [""];
 
+//singleGuess variable which will store the single guess split into individual letters
+let tempLetterArray;
+
 const availWords = require('../data/5_letter_words');
 
 //choosing random word from available words array
@@ -89,7 +92,7 @@ router.post("/", (req, res, next) => {
 	}
 
 	//add the letters of the guess to an array
-	let tempLetterArray;
+	
 	//splitting and adding individual letters of a string to an array
 	tempLetterArray = newGuess.split("");
 
@@ -98,6 +101,17 @@ router.post("/", (req, res, next) => {
 		alphabet[tempLetterArray[i]][1] = "red";
 	}
 
+   //splitting randomWord into array
+   let randomWordPlaceholder = randomWord.word.split("");
+
+   //looping through random word and comparing it with guess to see if there are any overlaps
+   for (let i = 0; i < tempLetterArray.length; i++) {
+      if(alphabet[tempLetterArray[i]][1] === "red" && alphabet[tempLetterArray[i]][2] === "green" && tempLetterArray[i] !== randomWordPlaceholder[i]){
+         alphabet[tempLetterArray[i]][1] = "yellow"
+      }
+   }
+
+   console.log(randomWordPlaceholder);
 	console.log(alphabet);
 
 	//adding new guess to the guess array
@@ -118,16 +132,17 @@ router.get("/", (req, res, next) => {
 	for (let i = 0; i < randomWordArray.length; i++) {
 		alphabet[randomWordArray[i]][2] = "green";
 	}
-   
-   console.log(randomWordArray[0]);
 
+
+      
    //this all the data that is being shared with gameboard as it is rendered
 	res.render("gameboard", {
 		availWords: availWords,
 		randomWord: randomWord,
 		guesses: guesses,
 		alphabet: alphabet,
-      randomWordArray:randomWordArray
+      randomWordArray:randomWordArray,
+      tempLetterArray:tempLetterArray
 	});
 });
 

@@ -1,19 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet');
 
+*{
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
 .background {
    color: E1E1E1;
 }
 
-.grid_box{
+body{
+   background: #E1E1E1;
+   display: flex;
+   flex-direction: row;
+}
+
+.container{
    display: flex;
    flex-direction: column;
-   width: 50vb;
+   flex-wrap: wrap;
+   width: 50%;
+   margin: 40px;
+   align-items: center;
 }
 
 .keyboard_layout {
    position: relative;
-   width: 555px;
-   height: 186px;
+   width: 50%;
+   height: fit-content;
 }
 
 .keyboard_frame {
@@ -21,15 +35,8 @@
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   padding: 10px 0px;
    gap: 20px;
    flex-wrap: wrap;
-
-   position: absolute;
-   left: 0%;
-   right: 0%;
-   top: 0%;
-   bottom: 67.74%;
 }
 
 
@@ -119,19 +126,16 @@
 }
 
 .guess_input{
-   box-sizing: border-box;
 
    display: flex;
    flex-direction: row;
    align-items: center;
    padding: 0px 0px 0px 16px;
    gap: 16px;
-
-   position: absolute;
    width: 280px;
    height: 48px;
-   left: 925px;
-   top: 16px;
+   margin-bottom: 20px;
+
    background: #f4f4f4;
    border: 2px solid #356859;
    border-radius: 4px;
@@ -144,6 +148,12 @@
    color: #2b2b2b;
 }
 
+.form_action{
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+}
+
 .button_active {
    display: flex;
    flex-direction: row;
@@ -151,11 +161,10 @@
    align-items: center;
    padding: 0px 16px;
    gap: 10px;
+   margin-bottom: 20px;
 
-   position: relative;
    width: 78px;
    height: 36px;
-   right: -900px;
    background: #356859;
    border-radius: 8px;
 }
@@ -180,13 +189,14 @@
    flex-direction: row;
    position:relative;
    width: 555px;
-   height: 95px;
+   height: 60px;
+   margin-bottom: 20px;
 }
 
 .guess_box{
    box-sizing: border-box;
-   height: 95px;
-   width: 95px;
+   height: 60px;
+   width: 60px;
 
    position: relative;
    border: 5px solid #f4f4f4;
@@ -195,12 +205,13 @@
 
 .wrong_space_letter {
    position: relative;
-   width: 95px;
-   height: 95px;
+   width: 60px;
+   height: 60px;
    display: flex;
    flex-direction: column;
    background:#808080;
    border-radius: 15px;
+   margin: 20px;
 }
 
 
@@ -211,7 +222,7 @@
    font-family: 'Nunito';
    font-style: normal;
    font-weight: 500;
-   font-size: 48px;
+   font-size: 35px;
    line-height: 65px;
 
    align-items: center;
@@ -222,12 +233,13 @@
 
 .right_space_letter {
    position: relative;
-   width: 95px;
-   height: 95px;
+   width: 60px;
+   height: 60px;
    display: flex;
    flex-direction: column;
    background:#356859;
    border-radius: 15px;
+   margin: 20px;
 }
 
 .right_space_letter_text{
@@ -237,7 +249,7 @@
    font-family: 'Nunito';
    font-style: normal;
    font-weight: 500;
-   font-size: 48px;
+   font-size: 35px;
    line-height: 65px;
 
    align-items: center;
@@ -248,12 +260,13 @@
 
 .right_letter_wrong_space {
    position: relative;
-   width: 95px;
-   height: 95px;
+   width: 60px;
+   height: 60px;
    display: flex;
    flex-direction: column;
    background:#FFDE03;
    border-radius: 15px;
+   margin: 20px;
 }
 
 .right_letter_wrong_space_text {
@@ -263,7 +276,7 @@
    font-family: 'Nunito';
    font-style: normal;
    font-weight: 500;
-   font-size: 48px;
+   font-size: 35px;
    line-height: 65px;
 
    align-items: center;
