@@ -37,39 +37,81 @@ const alphabetArray = [
 
 //alphabet object
 let alphabet = {
-	a: ["a", "grey", ""],
-	b: ["b", "grey", ""],
-	c: ["c", "grey", ""],
-	d: ["d", "grey", ""],
-	e: ["e", "grey", ""],
-	f: ["f", "grey", ""],
-	g: ["g", "grey", ""],
-	h: ["h", "grey", ""],
-	i: ["i", "grey", ""],
-	j: ["j", "grey", ""],
-	k: ["k", "grey", ""],
-	l: ["l", "grey", ""],
-	m: ["m", "grey", ""],
-	n: ["n", "grey", ""],
-	o: ["o", "grey", ""],
-	p: ["p", "grey", ""],
-	q: ["q", "grey", ""],
-	r: ["r", "grey", ""],
-	s: ["s", "grey", ""],
-	t: ["t", "grey", ""],
-	u: ["u", "grey", ""],
-	v: ["v", "grey", ""],
-	w: ["w", "grey", ""],
-	x: ["x", "grey", ""],
-	y: ["y", "grey", ""],
-	z: ["z", "grey", ""]
+	a: ["a","","","","","","",""],
+	b: ["b","","","","","","",""],
+	c: ["c","","","","","","",""],
+	d: ["d","","","","","","",""],
+	e: ["e","","","","","","",""],
+	f: ["f","","","","","","",""],
+	g: ["g","","","","","","",""],
+	h: ["h","","","","","","",""],
+	i: ["i","","","","","","",""],
+	j: ["j","","","","","","",""],
+	k: ["k","","","","","","",""],
+	l: ["l","","","","","","",""],
+	m: ["m","","","","","","",""],
+	n: ["n","","","","","","",""],
+	o: ["o","","","","","","",""],
+	p: ["p","","","","","","",""],
+	q: ["q","","","","","","",""],
+	r: ["r","","","","","","",""],
+	s: ["s","","","","","","",""],
+	t: ["t","","","","","","",""],
+	u: ["u","","","","","","",""],
+	v: ["v","","","","","","",""],
+	w: ["w","","","","","","",""],
+	x: ["x","","","","","","",""],
+	y: ["y","","","","","","",""],
+	z: ["z","","","","","","",""],
 };
+const alphabetMega = {
+	a: ["a","","","","","","",""],
+	b: ["b","","","","","","",""],
+	c: ["c","","","","","","",""],
+	d: ["d","","","","","","",""],
+	e: ["e","","","","","","",""],
+	f: ["f","","","","","","",""],
+	g: ["g","","","","","","",""],
+	h: ["h","","","","","","",""],
+	i: ["i","","","","","","",""],
+	j: ["j","","","","","","",""],
+	k: ["k","","","","","","",""],
+	l: ["l","","","","","","",""],
+	m: ["m","","","","","","",""],
+	n: ["n","","","","","","",""],
+	o: ["o","","","","","","",""],
+	p: ["p","","","","","","",""],
+	q: ["q","","","","","","",""],
+	r: ["r","","","","","","",""],
+	s: ["s","","","","","","",""],
+	t: ["t","","","","","","",""],
+	u: ["u","","","","","","",""],
+	v: ["v","","","","","","",""],
+	w: ["w","","","","","","",""],
+	x: ["x","","","","","","",""],
+	y: ["y","","","","","","",""],
+	z: ["z","","","","","","",""],
+};
+
+//creating objects to hold a snapshot of guess arrays
+let guessObjectArray = [];
+
+let guessObject1;
+let guessObject2;
+let guessObject3;
+let guessObject4;
+let guessObject5;
+let guessObject6;
+
+//creating variable to hold the number of guesses and an array to add them to
+let guessNum = 0;
+let guessNumArray = [];
 
 //creating guesses array
 let guesses = [];
 
-//letters used array
-let usedLettersArray = [""];
+//array that holds all of the guesses
+let guessArray = [];
 
 //singleGuess variable which will store the single guess split into individual letters
 let tempLetterArray;
@@ -82,46 +124,77 @@ let randomWord = availWords[Math.floor(Math.random() * availWords.length)];
 //creating variable to hold new guess array
 let newGuess;
 
+//creating a counting array for iterating
+let countArray = [2,3,4,5,6,7]
+
 router.post("/", (req, res, next) => {
 	//creating variable to read request body
 	newGuess = req.body.guess;
+
+
+	//pushing newGuess into guess array
+	guesses.push(newGuess)
 
 	//compare newGuess to the randomWord
 	if (newGuess === randomWord.word) {
 		res.redirect("/winner");
 	}
-
-	//add the letters of the guess to an array
 	
 	//splitting and adding individual letters of a string to an array
 	tempLetterArray = newGuess.split("");
 
-	//change values in the alphabet object to "grey becasue the letters have been chosen
-	for (let i = 0; i < tempLetterArray.length; i++) {
-		alphabet[tempLetterArray[i]][1] = "red";
-	}
 
    //splitting randomWord into array
    let randomWordPlaceholder = randomWord.word.split("");
 
-   //looping through random word and comparing it with guess to see if there are any overlaps
-   for (let i = 0; i < tempLetterArray.length; i++) {
-      if(alphabet[tempLetterArray[i]][1] === "red" && alphabet[tempLetterArray[i]][2] === "green" && tempLetterArray[i] !== randomWordPlaceholder[i]){
-         alphabet[tempLetterArray[i]][1] = "yellow"
-      }
-   }
+	//pushing current version alphabet into array
+	for (let i = 0; i < tempLetterArray.length; i++) {
+		//if the letter is in the word and in the correct space
+		if(alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] === randomWordPlaceholder[i]){
+			alphabet[tempLetterArray[i]][guesses.length + 1] = "green";
+		}
+		//if the letter is in the word but not in the correct space
+		else if (alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] !== randomWord[i]){
+			alphabet[tempLetterArray[i]][guesses.length + 1] = "yellow";
+		}
+		//if the letter is not in the word
+		else {
+			alphabet[tempLetterArray[i]][guesses.length + 1] = "grey"
+		}
+	}
 
-   console.log(randomWordPlaceholder);
-	console.log(alphabet);
+	console.log(guesses);
 
-	//adding new guess to the guess array
-	guesses.push({ guess: newGuess });
+	//adding new guess to guess array
+	guessArray.push(newGuess)
+
+	//incrementing guess number
+	guessNum++;
 
 	res.redirect("/");
 });
 
+
+router.get("/winner", (req, res, next) => {
+	res.render("winnerPage");
+
+	//clear the guessObjectArray
+	guessObjectArray = [];
+
+	//reset guessNum to 0 and guessNumArray to empty
+	guessNum = 0;
+	guessNumArray = [];
+
+	//reset guess Array
+	guessArray = [];
+
+	//change alphabet object back to its original form
+	console.log(alphabet);
+});
+
 router.get("/", (req, res, next) => {
-	//run these functions everytime page reloads
+
+	//run these functions everytime page reloads gets new word and clears the guesses array
 	if (newGuess === randomWord.word) {
 		randomWord = availWords[Math.floor(Math.random() * availWords.length)];
 		guesses = [];
@@ -130,30 +203,26 @@ router.get("/", (req, res, next) => {
 	//split the randomWord into an array and then add the word to the alphabet and show green
 	let randomWordArray = randomWord.word.split("");
 	for (let i = 0; i < randomWordArray.length; i++) {
-		alphabet[randomWordArray[i]][2] = "green";
+		alphabet[randomWordArray[i]][1] = "in";
 	}
 
-
-      
-   //this all the data that is being shared with gameboard as it is rendered
+	console.log(alphabet);
+   //this all the data that is being shared with gameboard as is is rendered
 	res.render("gameboard", {
 		availWords: availWords,
 		randomWord: randomWord,
 		guesses: guesses,
 		alphabet: alphabet,
-      randomWordArray:randomWordArray,
-      tempLetterArray:tempLetterArray
+      randomWord:randomWord,
+      tempLetterArray:tempLetterArray,
+		guessObjectArray:guessObjectArray,
+		guessNum:guessNum,
+		guessNumArray:guessNumArray,
+		guessArray:guessArray,
+		countArray:countArray
 	});
 });
 
-router.get("/winner", (req, res, next) => {
-	res.render("winnerPage");
 
-	//change alphabet object back to its original form
-	for (let i = 0; i < alphabetArray.length; i++) {
-		alphabet[alphabetArray[i]][1] = "grey";
-		alphabet[alphabetArray[i]][2] = "";
-	}
-});
 
 module.exports = router;

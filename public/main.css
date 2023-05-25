@@ -26,8 +26,9 @@ body{
 
 .keyboard_layout {
    position: relative;
-   width: 50%;
+   width: 100%;
    height: fit-content;
+   margin-top: 40px;
 }
 
 .keyboard_frame {

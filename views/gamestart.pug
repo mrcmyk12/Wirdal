@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+html(lang="en")
+   head
+      meta(charset="UTF-8")
+      meta(http-equiv="X-UA-Compatible", content="IE=edge")
+      meta(name="viewport", content="width=device-width, initial-scale=1.0")
+      title Wirdal 
+      link(rel="stylesheet", href="main.css")
+   body
+      div.container
+         //h1 #{randomWord.word}
+         
+               
+      div.container
+         form.form_action(action="/", method="POST") 
+            input.guess_input(type="text", name="guess")#guess
+            button.button_active(type="submit") 
+               .button_active_text Submit
+         div.keyboard_layout
+            div.keyboard_frame  
+               each letter in alphabet
+                  if (letter[1] === "red" && letter[2] === "green")
+                     div.small_text_box_correct
+                        .inside_small_text_box 
+                           .small_text_letter #{letter[0]} 
+                  else if (letter[1] === "yellow")
+                     div.small_text_box_right_letter_wrong_place
+                        .inside_small_text_box 
+                           .small_text_letter #{letter[0]} 
+                  else if (letter[1] === "red" && letter[2] === "")
+                     div.small_text_box_incorrect
+                        .inside_small_text_box 
+                           .small_text_letter #{letter[0]} 
+                  else 
+                     div.small_text_box
+                        .inside_small_text_box 
+                           .small_text_letter #{letter[0]} 
