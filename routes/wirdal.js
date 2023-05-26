@@ -64,44 +64,10 @@ let alphabet = {
 	y: ["y","","","","","","",""],
 	z: ["z","","","","","","",""],
 };
-const alphabetMega = {
-	a: ["a","","","","","","",""],
-	b: ["b","","","","","","",""],
-	c: ["c","","","","","","",""],
-	d: ["d","","","","","","",""],
-	e: ["e","","","","","","",""],
-	f: ["f","","","","","","",""],
-	g: ["g","","","","","","",""],
-	h: ["h","","","","","","",""],
-	i: ["i","","","","","","",""],
-	j: ["j","","","","","","",""],
-	k: ["k","","","","","","",""],
-	l: ["l","","","","","","",""],
-	m: ["m","","","","","","",""],
-	n: ["n","","","","","","",""],
-	o: ["o","","","","","","",""],
-	p: ["p","","","","","","",""],
-	q: ["q","","","","","","",""],
-	r: ["r","","","","","","",""],
-	s: ["s","","","","","","",""],
-	t: ["t","","","","","","",""],
-	u: ["u","","","","","","",""],
-	v: ["v","","","","","","",""],
-	w: ["w","","","","","","",""],
-	x: ["x","","","","","","",""],
-	y: ["y","","","","","","",""],
-	z: ["z","","","","","","",""],
-};
+
 
 //creating objects to hold a snapshot of guess arrays
 let guessObjectArray = [];
-
-let guessObject1;
-let guessObject2;
-let guessObject3;
-let guessObject4;
-let guessObject5;
-let guessObject6;
 
 //creating variable to hold the number of guesses and an array to add them to
 let guessNum = 0;
@@ -127,6 +93,11 @@ let newGuess;
 //creating a counting array for iterating
 let countArray = [2,3,4,5,6,7]
 
+//create arrays for holding green, yellow, and grey letters
+let greenLetters = [];
+let greyLetters = [];
+let yellowLetters = [];
+
 router.post("/", (req, res, next) => {
 	//creating variable to read request body
 	newGuess = req.body.guess;
@@ -140,7 +111,7 @@ router.post("/", (req, res, next) => {
 		res.redirect("/winner");
 	}
 	
-	//splitting and adding individual letters of a string to an array
+	//splitting and adding individual letters of the new guess into an array
 	tempLetterArray = newGuess.split("");
 
 
@@ -163,7 +134,22 @@ router.post("/", (req, res, next) => {
 		}
 	}
 
-	console.log(guesses);
+	//adding letters to the colored letters array
+	for (let i = 0; i < tempLetterArray.length; i++){
+		if (alphabet[tempLetterArray[i]][guessNum + 2] == "green") {
+			greenLetters.push(tempLetterArray[i]);
+		}
+		else if (alphabet[tempLetterArray[i]][guessNum + 2] == "yellow"){
+			yellowLetters.push(tempLetterArray[i]);
+		}
+		else {
+			greyLetters.push(tempLetterArray[i])
+		}
+	}
+
+	console.log("grey letters", greyLetters);
+	console.log("green letters", greenLetters);
+	console.log("yellow letters", yellowLetters);
 
 	//adding new guess to guess array
 	guessArray.push(newGuess)
@@ -225,6 +211,11 @@ router.get("/", (req, res, next) => {
 			y: ["y","","","","","","",""],
 			z: ["z","","","","","","",""],
 		};
+
+		//clearing the colored letters array
+		greyLetters = [];
+		yellowLetters = [];
+		greenLetters = [];
 	}
 
 	//run these functions everytime page reloads gets new word and clears the guesses array
@@ -239,7 +230,7 @@ router.get("/", (req, res, next) => {
 		alphabet[randomWordArray[i]][1] = "in";
 	}
 
-	console.log(alphabet);
+	//console.log(alphabet);
 	console.log(randomWord);
 
    //this all the data that is being shared with gameboard as is is rendered
@@ -254,7 +245,10 @@ router.get("/", (req, res, next) => {
 		guessNum:guessNum,
 		guessNumArray:guessNumArray,
 		guessArray:guessArray,
-		countArray:countArray
+		countArray:countArray,
+		greenLetters: greenLetters,
+		greyLetters: greyLetters,
+		yellowLetters: yellowLetters
 	});
 });
 

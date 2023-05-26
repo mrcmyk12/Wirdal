@@ -343,15 +343,15 @@ html(lang="en")
          div.keyboard_layout
             div.keyboard_frame  
                each letter in alphabet
-                  if (letter[1] === "red" && letter[2] === "green")
+                  if (greenLetters.includes(letter[0]) == true)
                      div.small_text_box_correct
                         .inside_small_text_box 
                            .small_text_letter #{letter[0]} 
-                  else if (letter[1] === "yellow")
+                  else if (yellowLetters.includes(letter[0]) == true)
                      div.small_text_box_right_letter_wrong_place
                         .inside_small_text_box 
                            .small_text_letter #{letter[0]} 
-                  else if (letter[1] === "red" && letter[2] === "")
+                  else if (greyLetters.includes(letter[0]) == true)
                      div.small_text_box_incorrect
                         .inside_small_text_box 
                            .small_text_letter #{letter[0]} 
