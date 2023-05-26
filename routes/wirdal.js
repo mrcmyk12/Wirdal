@@ -194,6 +194,39 @@ router.get("/winner", (req, res, next) => {
 
 router.get("/", (req, res, next) => {
 
+	//check if guessNum is 0, if it is reset the alphabet object
+	console.log(guessNum)
+	if (guessNum === 0) {
+		alphabet = {
+			a: ["a","","","","","","",""],
+			b: ["b","","","","","","",""],
+			c: ["c","","","","","","",""],
+			d: ["d","","","","","","",""],
+			e: ["e","","","","","","",""],
+			f: ["f","","","","","","",""],
+			g: ["g","","","","","","",""],
+			h: ["h","","","","","","",""],
+			i: ["i","","","","","","",""],
+			j: ["j","","","","","","",""],
+			k: ["k","","","","","","",""],
+			l: ["l","","","","","","",""],
+			m: ["m","","","","","","",""],
+			n: ["n","","","","","","",""],
+			o: ["o","","","","","","",""],
+			p: ["p","","","","","","",""],
+			q: ["q","","","","","","",""],
+			r: ["r","","","","","","",""],
+			s: ["s","","","","","","",""],
+			t: ["t","","","","","","",""],
+			u: ["u","","","","","","",""],
+			v: ["v","","","","","","",""],
+			w: ["w","","","","","","",""],
+			x: ["x","","","","","","",""],
+			y: ["y","","","","","","",""],
+			z: ["z","","","","","","",""],
+		};
+	}
+
 	//run these functions everytime page reloads gets new word and clears the guesses array
 	if (newGuess === randomWord.word) {
 		randomWord = availWords[Math.floor(Math.random() * availWords.length)];
@@ -207,6 +240,8 @@ router.get("/", (req, res, next) => {
 	}
 
 	console.log(alphabet);
+	console.log(randomWord);
+
    //this all the data that is being shared with gameboard as is is rendered
 	res.render("gameboard", {
 		availWords: availWords,
