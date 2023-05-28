@@ -65,6 +65,8 @@ let alphabet = {
 	z: ["z","","","","","","",""],
 };
 
+//creating array to hold word library
+let availableWordsArray = [];
 
 //creating objects to hold a snapshot of guess arrays
 let guessObjectArray = [];
@@ -87,6 +89,11 @@ const availWords = require('../data/5_letter_words');
 //choosing random word from available words array
 let randomWord = availWords[Math.floor(Math.random() * availWords.length)];
 
+//adding availwords to array in order to see if our newGuess is a part of the allowed words
+availWords.forEach((element) => {
+	availableWordsArray.push(element.word)
+})
+
 //creating variable to hold new guess array
 let newGuess;
 
@@ -102,63 +109,75 @@ router.post("/", (req, res, next) => {
 	//creating variable to read request body
 	newGuess = req.body.guess;
 
-
-	//pushing newGuess into guess array
-	guesses.push(newGuess)
-
-	//compare newGuess to the randomWord
-	if (newGuess === randomWord.word) {
-		res.redirect("/winner");
+	//determine if new guess is an actual word
+	if (availableWordsArray.includes(newGuess) == false || newGuess.length < 5){
+		res.redirect("/wrong");
+		return;
 	}
+
+	console.log(availableWordsArray);
 	
-	//splitting and adding individual letters of the new guess into an array
-	tempLetterArray = newGuess.split("");
 
+			//pushing newGuess into guess array
+		guesses.push(newGuess)
 
-   //splitting randomWord into array
-   let randomWordPlaceholder = randomWord.word.split("");
-
-	//pushing current version alphabet into array
-	for (let i = 0; i < tempLetterArray.length; i++) {
-		//if the letter is in the word and in the correct space
-		if(alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] === randomWordPlaceholder[i]){
-			alphabet[tempLetterArray[i]][guesses.length + 1] = "green";
+		//compare newGuess to the randomWord
+		if (newGuess === randomWord.word) {
+			res.redirect("/winner");
 		}
-		//if the letter is in the word but not in the correct space
-		else if (alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] !== randomWord[i]){
-			alphabet[tempLetterArray[i]][guesses.length + 1] = "yellow";
-		}
-		//if the letter is not in the word
-		else {
-			alphabet[tempLetterArray[i]][guesses.length + 1] = "grey"
-		}
-	}
 
-	//adding letters to the colored letters array
-	for (let i = 0; i < tempLetterArray.length; i++){
-		if (alphabet[tempLetterArray[i]][guessNum + 2] == "green") {
-			greenLetters.push(tempLetterArray[i]);
+
+		//splitting and adding individual letters of the new guess into an array
+		tempLetterArray = newGuess.split("");
+
+
+		//splitting randomWord into array
+		let randomWordPlaceholder = randomWord.word.split("");
+
+		//pushing current version alphabet into array
+		for (let i = 0; i < tempLetterArray.length; i++) {
+			//if the letter is in the word and in the correct space
+			if(alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] === randomWordPlaceholder[i]){
+				alphabet[tempLetterArray[i]][guesses.length + 1] = "green";
+			}
+			//if the letter is in the word but not in the correct space
+			else if (alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] !== randomWord[i]){
+				alphabet[tempLetterArray[i]][guesses.length + 1] = "yellow";
+			}
+			//if the letter is not in the word
+			else {
+				alphabet[tempLetterArray[i]][guesses.length + 1] = "grey"
+			}
 		}
-		else if (alphabet[tempLetterArray[i]][guessNum + 2] == "yellow"){
-			yellowLetters.push(tempLetterArray[i]);
+
+		//adding letters to the colored letters array
+		for (let i = 0; i < tempLetterArray.length; i++){
+			if (alphabet[tempLetterArray[i]][guessNum + 2] == "green") {
+				greenLetters.push(tempLetterArray[i]);
+			}
+			else if (alphabet[tempLetterArray[i]][guessNum + 2] == "yellow"){
+				yellowLetters.push(tempLetterArray[i]);
+			}
+			else {
+				greyLetters.push(tempLetterArray[i])
+			}
 		}
-		else {
-			greyLetters.push(tempLetterArray[i])
-		}
-	}
 
-	console.log("grey letters", greyLetters);
-	console.log("green letters", greenLetters);
-	console.log("yellow letters", yellowLetters);
+		console.log("grey letters", greyLetters);
+		console.log("green letters", greenLetters);
+		console.log("yellow letters", yellowLetters);
 
-	//adding new guess to guess array
-	guessArray.push(newGuess)
+		//adding new guess to guess array
+		guessArray.push(newGuess)
 
-	//incrementing guess number
-	guessNum++;
+		//incrementing guess number
+		guessNum++;
 
-	res.redirect("/");
+
+		res.redirect("/");
 });
+
+
 
 
 router.get("/winner", (req, res, next) => {
@@ -177,6 +196,10 @@ router.get("/winner", (req, res, next) => {
 	//change alphabet object back to its original form
 	console.log(alphabet);
 });
+
+router.get("/wrong", (req,res,next) => {
+	res.render('wrong_gameboard')
+})
 
 router.get("/", (req, res, next) => {
 
@@ -230,8 +253,20 @@ router.get("/", (req, res, next) => {
 		alphabet[randomWordArray[i]][1] = "in";
 	}
 
+	//testing dom selection
+
+	if (typeof document !== 'undefined'){
+		const testButton = document.querySelector('#test');
+		testButton.addEventListener('click', ()=>{
+			console.log("test")
+		})	
+
+	}
+
 	//console.log(alphabet);
 	console.log(randomWord);
+
+
 
    //this all the data that is being shared with gameboard as is is rendered
 	res.render("gameboard", {

@@ -337,7 +337,7 @@ html(lang="en")
                      .wrong_space_letter_text #{guessArray[5][4]}   
       div.container
          form.form_action(action="/", method="POST") 
-            input.guess_input(type="text", name="guess")#guess
+            input.guess_input(type="text", name="guess")#guessBox
             button.button_active(type="submit") 
                .button_active_text Submit
          div.keyboard_layout
@@ -359,3 +359,4 @@ html(lang="en")
                      div.small_text_box
                         .inside_small_text_box 
                            .small_text_letter #{letter[0]} 
+      
