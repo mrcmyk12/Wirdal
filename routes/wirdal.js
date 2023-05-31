@@ -198,7 +198,27 @@ router.get("/winner", (req, res, next) => {
 });
 
 router.get("/wrong", (req,res,next) => {
-	res.render('wrong_gameboard')
+
+	
+
+	//this all the data that is being shared with gameboard as is is rendered
+	res.render("wrong_gameboard", {
+		
+		availWords: availWords,
+		randomWord: randomWord,
+		guesses: guesses,
+		alphabet: alphabet,
+      randomWord:randomWord,
+      tempLetterArray:tempLetterArray,
+		guessObjectArray:guessObjectArray,
+		guessNum:guessNum,
+		guessNumArray:guessNumArray,
+		guessArray:guessArray,
+		countArray:countArray,
+		greenLetters: greenLetters,
+		greyLetters: greyLetters,
+		yellowLetters: yellowLetters
+	});
 })
 
 router.get("/", (req, res, next) => {
