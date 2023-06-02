@@ -181,7 +181,23 @@ router.post("/", (req, res, next) => {
 
 
 router.get("/winner", (req, res, next) => {
-	res.render("winnerPage");
+	res.render("winnerPage", {
+		
+		availWords: availWords,
+		randomWord: randomWord,
+		guesses: guesses,
+		alphabet: alphabet,
+      randomWord:randomWord,
+      tempLetterArray:tempLetterArray,
+		guessObjectArray:guessObjectArray,
+		guessNum:guessNum,
+		guessNumArray:guessNumArray,
+		guessArray:guessArray,
+		countArray:countArray,
+		greenLetters: greenLetters,
+		greyLetters: greyLetters,
+		yellowLetters: yellowLetters
+	});
 
 	//clear the guessObjectArray
 	guessObjectArray = [];
