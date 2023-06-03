@@ -6,6 +6,9 @@ const express = require("express");
 
 const router = express.Router();
 
+const csv = require('csv-parser')
+const results = [];
+
 const alphabetArray = [
 	"a",
 	"b",
@@ -64,6 +67,13 @@ let alphabet = {
 	y: ["y","","","","","","",""],
 	z: ["z","","","","","","",""],
 };
+
+fs.createReadStream('./data/5letters.csv')
+	.pipe(csv())
+	.on('data', (data) => results.push(data))
+	.on('end', () => {
+		console.log(results[256])
+	})
 
 //creating array to hold word library
 let availableWordsArray = [];
