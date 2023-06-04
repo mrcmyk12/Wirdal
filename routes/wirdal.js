@@ -6,8 +6,15 @@ const express = require("express");
 
 const router = express.Router();
 
+//adding csv parser to work with larger csv file
 const csv = require('csv-parser')
+
+//this is an array to hold the results of using the csv parser
 const results = [];
+const resultsArray = [];
+
+//this is the variable to hold the parsed random csv word
+let csvWord;
 
 const alphabetArray = [
 	"a",
@@ -68,12 +75,7 @@ let alphabet = {
 	z: ["z","","","","","","",""],
 };
 
-fs.createReadStream('./data/5letters.csv')
-	.pipe(csv())
-	.on('data', (data) => results.push(data))
-	.on('end', () => {
-		console.log(results[256])
-	})
+
 
 //creating array to hold word library
 let availableWordsArray = [];
@@ -115,6 +117,9 @@ let greenLetters = [];
 let greyLetters = [];
 let yellowLetters = [];
 
+//creating variable to hold the new randomWord from the larger word csv
+let betterRandomWord = {};
+
 router.post("/", (req, res, next) => {
 	//creating variable to read request body
 	newGuess = req.body.guess;
@@ -125,7 +130,7 @@ router.post("/", (req, res, next) => {
 		return;
 	}
 
-	console.log(availableWordsArray);
+	//console.log(availableWordsArray);
 	
 
 			//pushing newGuess into guess array
@@ -220,7 +225,7 @@ router.get("/winner", (req, res, next) => {
 	guessArray = [];
 
 	//change alphabet object back to its original form
-	console.log(alphabet);
+	//console.log(alphabet);
 });
 
 router.get("/wrong", (req,res,next) => {
@@ -250,7 +255,7 @@ router.get("/wrong", (req,res,next) => {
 router.get("/", (req, res, next) => {
 
 	//check if guessNum is 0, if it is reset the alphabet object
-	console.log(guessNum)
+	//console.log(guessNum)
 	if (guessNum === 0) {
 		alphabet = {
 			a: ["a","","","","","","",""],
@@ -289,24 +294,55 @@ router.get("/", (req, res, next) => {
 
 	//run these functions everytime page reloads gets new word and clears the guesses array
 	if (newGuess === randomWord.word) {
+
 		randomWord = availWords[Math.floor(Math.random() * availWords.length)];
-		guesses = [];
+		//reading the csv from the larger csv file
+		fs.createReadStream('./data/5letters.csv')
+		.pipe(csv())
+		.on('data', (data) => results.push(data))
+		.on('end', () => {
+
+			for(let i = 0; i < results.length - 1; i++){
+
+				//separating all of letters of the results object into individual letters
+				let letter1 = results[i]['1']
+				let letter2 = results[i]['2']
+				let letter3 = results[i]['3']
+				let letter4 = results[i]['4']
+				let letter5 = results[i]['5']
+
+				//creating temp array to hold the newly separated letters. putting them into the array so i can use the concat method
+				let tempArray = [];
+
+				//pushing the letters into tempArray
+				tempArray.push(letter1)
+				tempArray.push(letter2)
+				tempArray.push(letter3)
+				tempArray.push(letter4)
+				tempArray.push(letter5)
+
+				//pushing all the letters of the array together and making them into a word
+				let word = letter1.concat(letter2,letter3,letter4,letter5);
+
+				//pushing the new word into the resultsArray
+				resultsArray.push(word)
+			}
+
+
+
+			//console.log(resultsArray + " " + "  this is the results array")
+
+		
+
+			//console.log(letter1.concat(letter2, letter3, letter4, letter5) + "wordsTogether")
+		})
+		
 	}
 
 	//split the randomWord into an array and then add the word to the alphabet and show green
 	let randomWordArray = randomWord.word.split("");
 	for (let i = 0; i < randomWordArray.length; i++) {
 		alphabet[randomWordArray[i]][1] = "in";
-	}
-
-	//testing dom selection
-
-	if (typeof document !== 'undefined'){
-		const testButton = document.querySelector('#test');
-		testButton.addEventListener('click', ()=>{
-			console.log("test")
-		})	
-
 	}
 
 	//console.log(alphabet);
