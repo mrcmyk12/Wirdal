@@ -96,14 +96,14 @@ let guessArray = [];
 //singleGuess variable which will store the single guess split into individual letters
 let tempLetterArray;
 
-const availWords = require('../data/5_letter_words');
+//const availWords = require('../data/5_letter_words');
 
 
 
 //adding availwords to array in order to see if our newGuess is a part of the allowed words
-availWords.forEach((element) => {
-	availableWordsArray.push(element.word)
-})
+// availWords.forEach((element) => {
+// 	availableWordsArray.push(element.word)
+// })
 
 //creating variable to hold new guess array
 let newGuess;
@@ -152,7 +152,7 @@ fs.createReadStream('./data/5letters.csv')
 
 //choosing random word from available words array
 let randomWord = resultsArray[Math.floor(Math.random() * resultsArray.length)];
-console.log(randomWord);
+//console.log(randomWord);
 
 router.post("/", (req, res, next) => {
 	//creating variable to read request body
@@ -178,10 +178,11 @@ router.post("/", (req, res, next) => {
 
 		//splitting and adding individual letters of the new guess into an array
 		tempLetterArray = newGuess.split("");
-
+		
 
 		//splitting randomWord into array
-		//let randomWordPlaceholder = randomWord.split("");
+		let randomWordPlaceholder = randomWord.split("");
+		console.log(randomWordPlaceholder)
 
 		//pushing current version alphabet into array
 		for (let i = 0; i < tempLetterArray.length; i++) {
@@ -231,12 +232,8 @@ router.post("/", (req, res, next) => {
 
 router.get("/winner", (req, res, next) => {
 	res.render("winnerPage", {
-		
-		availWords: availWords,
-		randomWord: randomWord,
 		guesses: guesses,
 		alphabet: alphabet,
-      randomWord:randomWord,
       tempLetterArray:tempLetterArray,
 		guessObjectArray:guessObjectArray,
 		guessNum:guessNum,
@@ -245,7 +242,8 @@ router.get("/winner", (req, res, next) => {
 		countArray:countArray,
 		greenLetters: greenLetters,
 		greyLetters: greyLetters,
-		yellowLetters: yellowLetters
+		yellowLetters: yellowLetters,
+		randomWord: randomWord,
 	});
 
 	//clear the guessObjectArray
@@ -268,8 +266,6 @@ router.get("/wrong", (req,res,next) => {
 
 	//this all the data that is being shared with gameboard as is is rendered
 	res.render("wrong_gameboard", {
-		
-		availWords: availWords,
 		randomWord: randomWord,
 		guesses: guesses,
 		alphabet: alphabet,
@@ -340,19 +336,18 @@ router.get("/", (req, res, next) => {
 
 
 	//split the randomWord into an array and then add the word to the alphabet and show green
-	// let randomWordArray = randomWord.split("");
-	// for (let i = 0; i < randomWordArray.length; i++) {
-	// 	alphabet[randomWordArray[i]][1] = "in";
-	// }
+	let randomWordArray = randomWord.split("");
+	for (let i = 0; i < randomWordArray.length; i++) {
+		alphabet[randomWordArray[i]][1] = "in";
+	}
 
-	//console.log(alphabet);
+	console.log(alphabet);
 	//console.log(randomWord);
 
 
 
    //this all the data that is being shared with gameboard as is is rendered
 	res.render("gameboard", {
-		availWords: availWords,
 		randomWord: randomWord,
 		guesses: guesses,
 		alphabet: alphabet,
