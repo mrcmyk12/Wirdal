@@ -10,19 +10,18 @@ html(lang="en")
       div.overlay
          div.pop_up_winner_modal
             p.pop_up_winner_modal_header_text Winner
-            p.pop_up_winner_modal_body_text The correct word was:
-            .winner_tiles_box    
-               each letter in randomWord  
-                  div.small_text_winner_tile
-                     p.small_text_winner_tile_text #{letter[0]}
-                  div.small_text_winner_tile
-                     p.small_text_winner_tile_text #{letter[1]}
-                  div.small_text_winner_tile
-                     p.small_text_winner_tile_text #{letter[2]}
-                  div.small_text_winner_tile
-                     p.small_text_winner_tile_text #{letter[3]}
-                  div.small_text_winner_tile
-                     p.small_text_winner_tile_text #{letter[4]}
+            p.pop_up_winner_modal_body_text The correct word was: 
+            .winner_tiles_box   
+               div.small_text_winner_tile
+                  p.small_text_winner_tile_text #{randomWord[0]}
+               div.small_text_winner_tile
+                  p.small_text_winner_tile_text #{randomWord[1]}
+               div.small_text_winner_tile
+                  p.small_text_winner_tile_text #{randomWord[2]}
+               div.small_text_winner_tile
+                  p.small_text_winner_tile_text #{randomWord[3]}
+               div.small_text_winner_tile
+                  p.small_text_winner_tile_text #{randomWord[4]}
             form(action="/", method="GET")
                button.play_again_button(type="submit")
                   p.play_again_button_text Play Again

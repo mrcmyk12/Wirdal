@@ -327,6 +327,8 @@ router.get("/", (req, res, next) => {
 	//run these functions everytime page reloads gets new word and clears the guesses array
 	if (newGuess === randomWord) {
 
+		
+
 		randomWord = resultsArray[Math.floor(Math.random() * resultsArray.length)];
 		console.log(randomWord)
 		
