@@ -98,8 +98,7 @@ let tempLetterArray;
 
 const availWords = require('../data/5_letter_words');
 
-//choosing random word from available words array
-let randomWord = availWords[Math.floor(Math.random() * availWords.length)];
+
 
 //adding availwords to array in order to see if our newGuess is a part of the allowed words
 availWords.forEach((element) => {
@@ -117,15 +116,50 @@ let greenLetters = [];
 let greyLetters = [];
 let yellowLetters = [];
 
-//creating variable to hold the new randomWord from the larger word csv
-let betterRandomWord = {};
+//reading the csv from the larger csv file
+fs.createReadStream('./data/5letters.csv')
+.pipe(csv())
+.on('data', (data) => results.push(data))
+.on('end', () => {
+
+	for(let i = 0; i < results.length - 1; i++){
+
+		//separating all of letters of the results object into individual letters
+		let letter1 = results[i]['1']
+		let letter2 = results[i]['2']
+		let letter3 = results[i]['3']
+		let letter4 = results[i]['4']
+		let letter5 = results[i]['5']
+
+		//creating temp array to hold the newly separated letters. putting them into the array so i can use the concat method
+		let tempArray = [];
+
+		//pushing the letters into tempArray
+		tempArray.push(letter1)
+		tempArray.push(letter2)
+		tempArray.push(letter3)
+		tempArray.push(letter4)
+		tempArray.push(letter5)
+
+		//pushing all the letters of the array together and making them into a word
+		let word = letter1.concat(letter2,letter3,letter4,letter5);
+
+		//pushing the new word into the resultsArray
+		resultsArray.push(word)
+	}
+	//console.log(letter1.concat(letter2, letter3, letter4, letter5) + "wordsTogether")
+})
+
+//choosing random word from available words array
+let randomWord = resultsArray[Math.floor(Math.random() * resultsArray.length)];
+console.log(randomWord);
 
 router.post("/", (req, res, next) => {
 	//creating variable to read request body
 	newGuess = req.body.guess;
 
 	//determine if new guess is an actual word
-	if (availableWordsArray.includes(newGuess) == false || newGuess.length < 5){
+	if (resultsArray.includes(newGuess) == false || newGuess.length < 5){
 		res.redirect("/wrong");
 		return;
 	}
@@ -137,7 +171,7 @@ router.post("/", (req, res, next) => {
 		guesses.push(newGuess)
 
 		//compare newGuess to the randomWord
-		if (newGuess === randomWord.word) {
+		if (newGuess === randomWord) {
 			res.redirect("/winner");
 		}
 
@@ -147,7 +181,7 @@ router.post("/", (req, res, next) => {
 
 
 		//splitting randomWord into array
-		let randomWordPlaceholder = randomWord.word.split("");
+		//let randomWordPlaceholder = randomWord.split("");
 
 		//pushing current version alphabet into array
 		for (let i = 0; i < tempLetterArray.length; i++) {
@@ -254,6 +288,8 @@ router.get("/wrong", (req,res,next) => {
 
 router.get("/", (req, res, next) => {
 
+	
+
 	//check if guessNum is 0, if it is reset the alphabet object
 	//console.log(guessNum)
 	if (guessNum === 0) {
@@ -293,60 +329,24 @@ router.get("/", (req, res, next) => {
 	}
 
 	//run these functions everytime page reloads gets new word and clears the guesses array
-	if (newGuess === randomWord.word) {
+	if (newGuess === randomWord) {
 
-		randomWord = availWords[Math.floor(Math.random() * availWords.length)];
-		//reading the csv from the larger csv file
-		fs.createReadStream('./data/5letters.csv')
-		.pipe(csv())
-		.on('data', (data) => results.push(data))
-		.on('end', () => {
-
-			for(let i = 0; i < results.length - 1; i++){
-
-				//separating all of letters of the results object into individual letters
-				let letter1 = results[i]['1']
-				let letter2 = results[i]['2']
-				let letter3 = results[i]['3']
-				let letter4 = results[i]['4']
-				let letter5 = results[i]['5']
-
-				//creating temp array to hold the newly separated letters. putting them into the array so i can use the concat method
-				let tempArray = [];
-
-				//pushing the letters into tempArray
-				tempArray.push(letter1)
-				tempArray.push(letter2)
-				tempArray.push(letter3)
-				tempArray.push(letter4)
-				tempArray.push(letter5)
-
-				//pushing all the letters of the array together and making them into a word
-				let word = letter1.concat(letter2,letter3,letter4,letter5);
-
-				//pushing the new word into the resultsArray
-				resultsArray.push(word)
-			}
-
-
-
-			//console.log(resultsArray + " " + "  this is the results array")
-
+		randomWord = resultsArray[Math.floor(Math.random() * resultsArray.length)];
+		console.log(randomWord)
 		
-
-			//console.log(letter1.concat(letter2, letter3, letter4, letter5) + "wordsTogether")
-		})
-		
+		//console.log(resultsArray[Math.floor(Math.random() * resultsArray.length)])	
 	}
+
+
 
 	//split the randomWord into an array and then add the word to the alphabet and show green
-	let randomWordArray = randomWord.word.split("");
-	for (let i = 0; i < randomWordArray.length; i++) {
-		alphabet[randomWordArray[i]][1] = "in";
-	}
+	// let randomWordArray = randomWord.split("");
+	// for (let i = 0; i < randomWordArray.length; i++) {
+	// 	alphabet[randomWordArray[i]][1] = "in";
+	// }
 
 	//console.log(alphabet);
-	console.log(randomWord);
+	//console.log(randomWord);
 
 
 
