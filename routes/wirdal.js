@@ -9,9 +9,7 @@ const router = express.Router();
 //adding csv parser to work with larger csv file
 const csv = require('csv-parser')
 
-//this is an array to hold the results of using the csv parser
-const results = [];
-const resultsArray = [];
+
 
 //this is the variable to hold the parsed random csv word
 let csvWord;
@@ -116,6 +114,10 @@ let greenLetters = [];
 let greyLetters = [];
 let yellowLetters = [];
 
+//this is an array to hold the results of using the csv parser
+const results = [];
+const resultsArray = [];
+
 //reading the csv from the larger csv file
 fs.createReadStream('./data/5letters.csv')
 .pipe(csv())
@@ -184,28 +186,31 @@ router.post("/", (req, res, next) => {
 		let randomWordPlaceholder = randomWord.split("");
 		console.log(randomWordPlaceholder)
 
+		//incrementing guess number
+		guessNum++;
+
 		//pushing current version alphabet into array
 		for (let i = 0; i < tempLetterArray.length; i++) {
 			//if the letter is in the word and in the correct space
 			if(alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] === randomWordPlaceholder[i]){
-				alphabet[tempLetterArray[i]][guesses.length + 1] = "green";
+				alphabet[tempLetterArray[i]][guessNum + 1] = "green";
 			}
 			//if the letter is in the word but not in the correct space
 			else if (alphabet[tempLetterArray[i]][1] === "in" && tempLetterArray[i] !== randomWord[i]){
-				alphabet[tempLetterArray[i]][guesses.length + 1] = "yellow";
+				alphabet[tempLetterArray[i]][guessNum + 1] = "yellow";
 			}
 			//if the letter is not in the word
 			else {
-				alphabet[tempLetterArray[i]][guesses.length + 1] = "grey"
+				alphabet[tempLetterArray[i]][guessNum + 1] = "grey"
 			}
 		}
 
 		//adding letters to the colored letters array
 		for (let i = 0; i < tempLetterArray.length; i++){
-			if (alphabet[tempLetterArray[i]][guessNum + 2] == "green") {
+			if (alphabet[tempLetterArray[i]][guessNum + 1] == "green") {
 				greenLetters.push(tempLetterArray[i]);
 			}
-			else if (alphabet[tempLetterArray[i]][guessNum + 2] == "yellow"){
+			else if (alphabet[tempLetterArray[i]][guessNum + 1] == "yellow"){
 				yellowLetters.push(tempLetterArray[i]);
 			}
 			else {
@@ -220,8 +225,7 @@ router.post("/", (req, res, next) => {
 		//adding new guess to guess array
 		guessArray.push(newGuess)
 
-		//incrementing guess number
-		guessNum++;
+
 
 
 		res.redirect("/");
@@ -325,7 +329,7 @@ router.get("/", (req, res, next) => {
 	}
 
 	//run these functions everytime page reloads gets new word and clears the guesses array
-	if (newGuess === randomWord) {
+	if (newGuess == randomWord) {
 
 		
 
@@ -344,7 +348,7 @@ router.get("/", (req, res, next) => {
 	}
 
 	console.log(alphabet);
-	//console.log(randomWord);
+	console.log(guessNum);
 
 
 
