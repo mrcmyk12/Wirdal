@@ -16,4 +16,4 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(wirdalRoutes);
 
-app.listen(3000);
+app.listen(80);
